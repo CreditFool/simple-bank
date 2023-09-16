@@ -4,14 +4,13 @@ test:
 createdb:
 	docker exec -it postgresql-docker createdb -U postgres simple_bank
 
-
 dropdb:
 	docker exec -it postgresql-docker dropdb -U postgres simple_bank
 
 migrateup:
-	migrate -path db/migrations/postgres -database ${DATABASE} -verbose up
+	migrate -path db/migration/postgres -database ${DATABASE} -verbose up
 
 migratedown:
-	migrate -path db/migrations/postgres -database ${DATABASE} -verbose down
+	migrate -path db/migration/postgres -database ${DATABASE} -verbose down
 
-.PHONY: test migrateup migratedown
+.PHONY: test createdb dropdb migrateup migratedown

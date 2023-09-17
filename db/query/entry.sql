@@ -15,7 +15,3 @@ SELECT * FROM entry
 ORDER BY id
 LIMIT $1
 OFFSET $2;
-
--- name: DeleteEntry :exec
-DELETE FROM entry
-WHERE id = $1;

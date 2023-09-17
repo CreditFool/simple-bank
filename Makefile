@@ -1,5 +1,5 @@
 test:
-	echo "Happy Lucky Smile Ya!"
+	go test -v -cover ./...
 
 createdb:
 	docker exec -it postgresql-docker createdb -U postgres simple_bank

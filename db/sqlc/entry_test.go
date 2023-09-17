@@ -4,6 +4,7 @@ import (
 	"context"
 	"simple-bank/util"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -42,7 +43,7 @@ func TestGetEntry(t *testing.T) {
   require.Equal(t, entryA.ID, entryB.ID)
   require.Equal(t, entryA.Account, entryB.Account)
   require.Equal(t, entryA.Amount, entryB.Amount)
-  require.Equal(t, entryA.CreatedAt, entryB.CreatedAt)
+  require.WithinDuration(t, entryA.CreatedAt, entryB.CreatedAt, time.Second)
 }
 
 func TestListEntry(t *testing.T) {

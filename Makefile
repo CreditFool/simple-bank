@@ -10,7 +10,13 @@ dropdb:
 migrateup:
 	migrate -path db/migration/postgres -database ${DATABASE} -verbose up
 
+migrateup_test:
+	migrate -path db/migration/postgres -database "postgresql://postgres:kokoro@localhost:5432/simple_bank_test?sslmode=disable" -verbose up
+
 migratedown:
 	migrate -path db/migration/postgres -database ${DATABASE} -verbose down
 
-.PHONY: test createdb dropdb migrateup migratedown
+migratedown_test:
+	migrate -path db/migration/postgres -database "postgresql://postgres:kokoro@localhost:5432/simple_bank_test?sslmode=disable" -verbose down
+
+.PHONY: test createdb dropdb migrateup migrateup_test migratedown migratedown_test

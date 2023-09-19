@@ -2,28 +2,28 @@ package db
 
 import (
 	"database/sql"
+	_ "github.com/lib/pq"
 	"log"
 	"os"
 	"testing"
-  _ "github.com/lib/pq"
 )
 
 const (
-  dbDriver = "postgres"
-  dbSource = "postgres://postgres:kokoro@localhost:5432/simple_bank_test?sslmode=disable"
+	dbDriver = "postgres"
+	dbSource = "postgres://postgres:kokoro@localhost:5432/simple_bank_test?sslmode=disable"
 )
 
 var testQueries *Queries
 var testDB *sql.DB
 
 func TestMain(m *testing.M) {
-  var err error
+	var err error
 
-  testDB, err = sql.Open(dbDriver, dbSource)
-  if err != nil {
-    log.Fatal("cannot connect to db", err)
-  }
+	testDB, err = sql.Open(dbDriver, dbSource)
+	if err != nil {
+		log.Fatal("cannot connect to db", err)
+	}
 
-  testQueries = New(testDB)
-  os.Exit(m.Run())
+	testQueries = New(testDB)
+	os.Exit(m.Run())
 }

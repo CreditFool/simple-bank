@@ -11,86 +11,86 @@ import (
 )
 
 func createRandomAccount(t *testing.T) Account {
-  arg := CreateAccountParams{
-    Owner: util.RandomOwner(),
-    Balance: util.RandomMoney(),
-    Currency: util.RandomCurrency(),
-  }
+	arg := CreateAccountParams{
+		Owner:    util.RandomOwner(),
+		Balance:  util.RandomMoney(),
+		Currency: util.RandomCurrency(),
+	}
 
-  account, err := testQueries.CreateAccount(context.Background(), arg)
-  require.NoError(t, err)
-  require.NotEmpty(t, account)
+	account, err := testQueries.CreateAccount(context.Background(), arg)
+	require.NoError(t, err)
+	require.NotEmpty(t, account)
 
-  require.Equal(t, arg.Owner, account.Owner)
-  require.Equal(t, arg.Balance, account.Balance)
-  require.Equal(t, arg.Currency, account.Currency)
+	require.Equal(t, arg.Owner, account.Owner)
+	require.Equal(t, arg.Balance, account.Balance)
+	require.Equal(t, arg.Currency, account.Currency)
 
-  require.NotZero(t, account.ID)
-  require.NotZero(t, account.CreatedAt)
+	require.NotZero(t, account.ID)
+	require.NotZero(t, account.CreatedAt)
 
-  return account
+	return account
 }
 
 func TestCreateAccount(t *testing.T) {
-  createRandomAccount(t)
+	createRandomAccount(t)
 }
 
 func TestGetAccount(t *testing.T) {
-  accountA := createRandomAccount(t)
-  accountB, err := testQueries.GetAccount(context.Background(), accountA.ID)
-  require.NoError(t, err)
-  require.NotEmpty(t, accountB)
+	accountA := createRandomAccount(t)
+	accountB, err := testQueries.GetAccount(context.Background(), accountA.ID)
+	require.NoError(t, err)
+	require.NotEmpty(t, accountB)
 
-  require.Equal(t, accountA.ID, accountB.ID) 
-  require.Equal(t, accountA.Owner, accountB.Owner) 
-  require.Equal(t, accountA.Balance, accountB.Balance) 
-  require.Equal(t, accountA.Currency, accountB.Currency) 
-  require.WithinDuration(t, accountA.CreatedAt, accountB.CreatedAt, time.Second) 
+	require.Equal(t, accountA.ID, accountB.ID)
+	require.Equal(t, accountA.Owner, accountB.Owner)
+	require.Equal(t, accountA.Balance, accountB.Balance)
+	require.Equal(t, accountA.Currency, accountB.Currency)
+	require.WithinDuration(t, accountA.CreatedAt, accountB.CreatedAt, time.Second)
 }
 
 func TestUpdateAccount(t *testing.T) {
-  accountA := createRandomAccount(t)
-  arg := UpdateAccountParams {
-    ID: accountA.ID,
-    Balance: util.RandomMoney(),
-  }
+	accountA := createRandomAccount(t)
+	arg := UpdateAccountParams{
+		ID:      accountA.ID,
+		Balance: util.RandomMoney(),
+	}
 
-  accountB, err := testQueries.UpdateAccount(context.Background(), arg)
-  require.NoError(t, err)
-  require.NotEmpty(t, accountB)
+	accountB, err := testQueries.UpdateAccount(context.Background(), arg)
+	require.NoError(t, err)
+	require.NotEmpty(t, accountB)
 
-  require.Equal(t, accountA.ID, accountB.ID) 
-  require.Equal(t, accountA.Owner, accountB.Owner) 
-  require.Equal(t, arg.Balance, accountB.Balance) 
-  require.Equal(t, accountA.Currency, accountB.Currency) 
-  require.WithinDuration(t, accountA.CreatedAt, accountB.CreatedAt, time.Second) 
+	require.Equal(t, accountA.ID, accountB.ID)
+	require.Equal(t, accountA.Owner, accountB.Owner)
+	require.Equal(t, arg.Balance, accountB.Balance)
+	require.Equal(t, accountA.Currency, accountB.Currency)
+	require.WithinDuration(t, accountA.CreatedAt, accountB.CreatedAt, time.Second)
 }
 
 func TestDeleteAccount(t *testing.T) {
-  accountA := createRandomAccount(t)
-  err := testQueries.DeleteAccount(context.Background(), accountA.ID)
-  require.NoError(t, err)
+	accountA := createRandomAccount(t)
+	err := testQueries.DeleteAccount(context.Background(), accountA.ID)
+	require.NoError(t, err)
 
-  accountB, err := testQueries.GetAccount(context.Background(), accountA.ID)
-  require.Error(t, err, sql.ErrNoRows.Error())
-  require.Empty(t, accountB)
+	accountB, err := testQueries.GetAccount(context.Background(), accountA.ID)
+	require.Error(t, err, sql.ErrNoRows.Error())
+	require.Empty(t, accountB)
 }
 
 func TestListAccount(t *testing.T) {
-  for i := 0; i < 10; i++ {
-    createRandomAccount(t)
-  }
+	for i := 0; i < 10; i++ {
+		createRandomAccount(t)
+	}
 
-  arg := ListAccountParams{
-    Limit: 5,
-    Offset: 5,
-  }
+	arg := ListAccountParams{
+		Limit:  5,
+		Offset: 5,
+	}
 
-  accounts, err := testQueries.ListAccount(context.Background(), arg)
-  require.NoError(t, err)
-  require.Len(t, accounts, 5)
+	accounts, err := testQueries.ListAccount(context.Background(), arg)
+	require.NoError(t, err)
+	require.Len(t, accounts, 5)
 
-  for _, account := range accounts {
-    require.NotEmpty(t, account)
-  }
+	for _, account := range accounts {
+		require.NotEmpty(t, account)
+	}
 }

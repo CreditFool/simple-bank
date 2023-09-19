@@ -19,4 +19,7 @@ migratedown:
 migratedown_test:
 	migrate -path db/migration/postgres -database "postgresql://postgres:kokoro@localhost:5432/simple_bank_test?sslmode=disable" -verbose down
 
+server:
+	go run main.go
+
 .PHONY: test createdb dropdb migrateup migrateup_test migratedown migratedown_test
